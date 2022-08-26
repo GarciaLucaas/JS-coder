@@ -20,6 +20,14 @@ function agregarcarrito(e){
         }
         carrito.push(newProducto)
         console.log(addLocalStorage())
+        Swal.fire({
+        title: 'Tu pedido',
+        text: '-',
+        imageUrl: 'https://unsplash.it/400/200',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+    })
 }
 function addLocalStorage(){
   localStorage.setItem('carrito', JSON.stringify(carrito))
