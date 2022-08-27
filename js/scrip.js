@@ -33,3 +33,25 @@ function addLocalStorage(){
   localStorage.setItem('carrito', JSON.stringify(carrito))
   console.log(carrito)
 }
+
+// fetch('https://jsonplaceholder.typicode.com/posts')
+//   .then((response) => response.json())
+//   .then((tabla) => mostrarTabla(tabla))
+//   .catch(error => console.log(error))
+
+
+// const mostrarTabla = (tabla)=>{
+//     document.getElementById("tabla")
+    
+//   }
+fetch('https://jsonplaceholder.typicode.com/posts')
+  .then((response) => response.json()) 
+  .then((tablas) => mostrarProducto(tablas));
+const mostrarProducto = (tablas => {
+    console.log(tablas)
+    let body = ``
+    for (let i = 0; i<5; i++){
+        body += `<tr><td>${tablas[i].id}</td><td>${tablas[i].title}</td><td>${tablas[i].Precio}</td></tr>` 
+    }
+    document.getElementById("tablas").innerHTML = body
+}) 
