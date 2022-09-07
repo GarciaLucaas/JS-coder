@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Triple",
+    "precio": 1000,
+    "img": "./img/hamburguesa.jpg",
+    "id":1
+  },
+  {
+    "title": "Doble",
+    "precio": 700,
+    "img": "./img/hamburguesa.jpg",
+    "id":2
+  },
+  {
+    "title": "Simple",
+    "precio": 500,
+    "img": "./img/hamburguesa.jpg",
+    "id":3
+  },
+  {
+    "title": "Papas",
+    "precio": 300,
+    "img": "./img/papas.jpg",
+    "id": 4
+  },
+  {
+    "title": "Bebida",
+    "precio": 300,
+    "img": "./img/bebida.jpg",
+    "id": 5
+  }
+]
