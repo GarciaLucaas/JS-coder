@@ -1,97 +1,98 @@
-const contProductos = document.getElementById('contenedorProd')
-let carrito=[];
-
-
-const dataProductos = async()=>{
-    const resp = await fetch("./js/data.json");
-    const dataJson = await resp.json();
-    console.log(dataJson);
-    
-    let o = -1;
-    dataJson.forEach((element)=>{
-        contProductos.innerHTML +=`
-                <div class="card" style="width: 18rem;">
-                    <img src="${element.img}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">${element.title}</h5>
-                        <p class="card-text">$ ${element.precio}</p>
-                        <button type="button" class="btn btn-dark" id="agregar ${element.id}">Comprar</button>
-                    </div> 
-                </div>`
-    })
-
-    const btnProducto = document.querySelectorAll("button[type='button']")
-    btnProducto.forEach(btn => {
-        // Datajson forEach error, btnProducto addEvent... Error :(
-        btn.addEventListener("click", ()=>{
-            console.log(btn); 
+const carrito =  []
+const contenedorProd = document.getElementById("contenedorProd")
+fetch("./js/data.json")
+    .then(response => response.json())
+    .then (productos =>{
+        productos.forEach((producto, indice)=>{
+            contenedorProd.innerHTML += `
+            <div class="card" id= "producto${indice}" style="width: 18rem;margin: 6px;">
+            <img id= "${producto.id}" class="card-img-top" src="${producto.img}" alt="imagen del producto">
+            <div class="card-body">
+                <h5 class="card-title" id= "${producto.id}">${producto.title}</h5>
+                <p class="card-text" >$ ${producto.precio} </p>
+                <button class= "btn btn-primary">Agregar al carrito</button>
+            </div>
+            </div>
+            `
             
-            Swal.fire({
-                title: 'Tu pedido agregado al carrito  ' + " " + dataJson[0].title,
-                text: '$'+" "+ dataJson[0].precio,
-                imageUrl: dataJson[0].img,
-                imageWidth: 400,
-                imageHeight: 200,
-                imageAlt: 'Custom image',
-            })
-            const producto = {
-                title:dataJson[0].title,
-                precio:dataJson[0].precio,
-                img:dataJson[0].img,
-                id:dataJson[0].id,
-                cantidad:1
-            }
-            agregarProductoCarrito(producto)
-        });
-        function agregarProductoCarrito(producto){
-            for(let i = 0;i<carrito.length;i++){
-               if (carrito[i].title === producto.title){
-                carrito[i].cantidad ++;
-                let total = 0;
-                    const carritoTotal = document.querySelector(".total")
-                    carrito.forEach((producto)=>{
-                        let precio = producto.precio
-                        total = total + precio*producto.cantidad
+        })
+        productos.forEach((producto, indice)=>{
+            
+            const cardProducto = document.getElementById(`producto${indice}`);
+            cardProducto.addEventListener("click",()=>{
+                if(productos.find(prod=> prod.id == producto.id)){
+                    const item = productos.find((prod=> prod.id == producto.id))
+                    
+                          
+                    Swal.fire({
+                        title: 'Tu pedido agregado al carrito  ' + " " + producto.title,
+                        text: '$'+" "+ producto.precio,
+                        imageUrl: producto.img,
+                        imageWidth: 400,
+                        imageHeight: 200,
+                        imageAlt: 'Custom image',
                     })
-                    carritoTotal.innerHTML =`$${total}`
-               }
-               
-            }
-           carrito.push(producto)
-           localStorage.setItem('Carrito', JSON.stringify(carrito))
-           renderCarrito();
-        }
+                    
+                
+                    producto.cantidad ++;
+                   
+                    carrito.push(item)
+                    console.log(carrito);
+                    
+                    localStorage.setItem("Carrito",JSON.stringify(carrito))
+                    mostrarCarrito()
+                }
+            })
+            
+        })
         const tbody = document.querySelector(".tbody")
-        function renderCarrito(){
-            tbody.innerHTML = ``
-            carrito.map(element =>{
+        const mostrarCarrito=()=>{
+
+            tbody.innerHTML = ""
+            carrito.map(producto =>{
+                
+                let precioTotal = document.getElementById("total")
+                precioTotal = Number(producto.precio * producto.cantidad)
+                // me va mal en matematica
                 const tr = document.createElement("tr")
                 tr.classList.add("itemCarrito")
-                const relleno = `
-                <td>${element.id}</td>
-                <td>${element.title}</td>
-                <td>${element.cantidad}</td>
-                <td>$ ${element.precio}</td>
-                <td><button type="button" class="btn btn-danger">Eliminar</button></td>
-
+                tr.innerHTML = `
+                <th>${producto.id}</th>
+                <th>${producto.title}</th>
+                <th>${producto.cantidad}</th>
+                <th>$ ${producto.precio}</th>
+                </tbody>
+                <span>$${precioTotal}</span>
+                <button type="button" id= "eliminar${producto.id}" class="btn btn-danger">Eliminar</button>
+                <button type="button" id= "finalizar${producto.id}" class="btn btn-info">Finalizar</button>
                 `
-                tr.innerHTML = relleno
                 tbody.append(tr)
+            
                 tr.querySelector(".btn-danger")
-                tr.addEventListener("click",()=>{
-                    tr.remove()
-                    carrito.cantidad --;
-                    elimnarCarrito()
+                localStorage.setItem("Carrito",JSON.stringify(carrito))
+                const eliminarItem = document.getElementById(`eliminar${producto.id}`)
+                eliminarItem.addEventListener("click",()=>{
+                    tr.remove(producto.id)
+                    eliminarCarrito()
                 })
-                function elimnarCarrito() {
-                    carrito.splice(0)
-                    console.log(carrito);
-                }
                 
+                function eliminarCarrito(){
+                    if(carrito.find(prod=> prod.id === producto.id)){
+                        const item = carrito.find((prod=> prod.id == producto.Id))
+                        let indice = carrito.indexOf(item)
+                        carrito.splice(indice,1)
+                        precioTotal = precioTotal - producto.precio
+                        console.log(carrito);
+                    }
+                }
+                const finalizar = document.getElementById(`finalizar${producto.id}`)
+                finalizar.addEventListener("click",()=>{
+                    tr.remove()
+                    carrito.length=0
+                    alert("Finalizaste tu compra"+ precioTotal)
+                    console.log(carrito);
+                })
             })
-            console.log(carrito);
         }
-    });       
-}
-dataProductos()
-
+        
+    })

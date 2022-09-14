@@ -1,32 +1,37 @@
 [
   {
+    "id":1,
     "title": "Triple",
     "precio": 1000,
     "img": "./img/hamburguesa.jpg",
-    "id":1
+    "cantidad":0
   },
   {
+    "id":2,
     "title": "Doble",
     "precio": 700,
     "img": "./img/hamburguesa.jpg",
-    "id":2
+    "cantidad":0
   },
   {
+    "id":3,
     "title": "Simple",
     "precio": 500,
     "img": "./img/hamburguesa.jpg",
-    "id":3
+    "cantidad":0
   },
   {
+    "id": 4,
     "title": "Papas",
     "precio": 300,
     "img": "./img/papas.jpg",
-    "id": 4
+    "cantidad":0
   },
   {
+    "id": 5,
     "title": "Bebida",
     "precio": 300,
     "img": "./img/bebida.jpg",
-    "id": 5
+    "cantidad":0
   }
 ]
